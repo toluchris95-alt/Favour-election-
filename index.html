@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!--
+    Favor (Skytunez) for Class Senator — Excelsiors (200L Medicine & Surgery)
+    Single-file site for GitHub Pages
+    Features: Hero, About, Promises (cards/accordion), Gallery slider, Poll, Contact/Support form (Bank Name, Account Number, Name) -> Email
+    Email via Formspree (default) OR EmailJS (optional, client-side).
+    Built with accessibility, responsiveness, and medical-themed UI in mind.
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vote Favor (Skytunez) — Excelsiors Class Senator</title>
+  <meta name="description" content="Vote Favor (Skytunez) for Excelsiors Senate — Leading with Excellence in Medicine. 200L Medicine & Surgery." />
+
+  <!-- Google Fonts (sans-serif for readability) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (icons for cards & UI) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#0e1b2b;        /* deep blue */
+      --panel:#12243a;     /* card */
+      --ink:#e9f2ff;       /* text */
+      --muted:#aac3df;     /* secondary text */
+      --brand:#0ea5a4;     /* teal (growth/health) */
+      --brand-dark:#0a7c7b;
+      --accent:#3b82f6;    /* medical blue accent */
+      --success:#16a34a;
+      --danger:#ef4444;
+      --shadow: 0 10px 30px rgba(2,6,23,.45);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,#0c1625 0%, #0e1b2b 100%);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;scroll-behavior:smooth}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;display:block}
+
+    /* Layout */
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    header{position:sticky;top:0;z-index:50;background:rgba(10,20,35,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+    .brand i{color:var(--accent)}
+    .nav a.btn{padding:10px 14px;border-radius:10px;background:var(--brand);color:#052424;font-weight:700;box-shadow:var(--shadow)}
+    .nav-links{display:flex;gap:16px;flex-wrap:wrap}
+    .nav-links a{color:var(--muted)}
+    .nav-links a:hover{color:var(--ink)}
+
+    /* Hero */
+    .hero{padding:70px 0 40px;position:relative;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--muted);font-size:13px}
+    h1.title{font-size:clamp(28px,5vw,46px);line-height:1.08;margin:14px 0}
+    .lead{color:var(--muted);font-size:clamp(15px,2.3vw,18px)}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:800}
+    .btn-primary{background:var(--brand);color:#052424;box-shadow:var(--shadow);animation:heartbeat 2.2s ease-in-out infinite}
+    .btn-outline{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.14)}
+    @keyframes heartbeat{
+      0%,100%{transform:scale(1)}
+      30%{transform:scale(1.04)}
+      45%{transform:scale(.998)}
+      60%{transform:scale(1.03)}
+    }
+    .hero-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    .stat{background:var(--panel);border-radius:12px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,.06)}
+    .stat b{display:block;font-size:22px}
+    .ticker{display:flex;gap:18px;overflow:auto;padding:10px 0;margin-top:16px}
+    .chip{white-space:nowrap;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);color:var(--muted);background:rgba(255,255,255,.02)}
+
+    /* Sections */
+    section{padding:60px 0}
+    .section-title{font-size:28px;margin-bottom:16px}
+    .section-sub{color:var(--muted);margin-bottom:26px}
+
+    /* About */
+    .about{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+
+    /* Promises */
+    .promises{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .promise{padding:16px;border-radius:14px;background:var(--panel);border:1px solid rgba(255,255,255,.06);transition:transform .2s ease, border-color .2s ease}
+    .promise:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.22)}
+    .promise i{font-size:22px;color:var(--accent)}
+    .promise h4{margin:8px 0}
+    .accordion{margin-top:20px;border-top:1px dashed rgba(255,255,255,.15);padding-top:16px}
+    details{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin:10px 0;padding:12px}
+    summary{cursor:pointer;font-weight:600}
+
+    /* Gallery slider */
+    .gallery{position:relative}
+    .slider{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .slide{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+    .gallery .controls{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+    .controls button{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--ink);border-radius:10px;padding:8px 12px;cursor:pointer}
+
+    /* Contact / Giveaway form */
+    form{display:grid;gap:12px}
+    label{font-weight:600}
+    input, select, textarea{background:rgba(255,255,255,.03);color:var(--ink);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px}
+    input::placeholder, textarea::placeholder{color:#91a7c0}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .hint{color:var(--muted);font-size:13px}
+    .success{display:none;margin-top:8px;padding:10px;border-radius:10px;background:#062e2d;color:#88f5ee;border:1px solid #1e8b8a}
+    .error{display:none;margin-top:8px;padding:10px;border-radius:10px;background:#3a0b0b;color:#ffbaba;border:1px solid #a11}
+
+    /* Poll */
+    .poll{margin-top:16px}
+    .poll-results{margin-top:8px;color:var(--muted);font-size:14px}
+
+    /* Pledge */
+    .pledge{display:grid;gap:10px}
+    canvas{background:#0a1726;border:1px dashed rgba(255,255,255,.2);border-radius:10px}
+
+    /* Footer */
+    footer{padding:28px 0;border-top:1px solid rgba(255,255,255,.08);background:rgba(10,20,35,.6)}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:center}
+    .credit{color:var(--muted)}
+    .quote{font-style:italic}
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero-grid{grid-template-columns:1fr}
+      .about{grid-template-columns:1fr}
+      .promises{grid-template-columns:1fr 1fr}
+      .slider{grid-template-columns:1fr 1fr}
+      .footer-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 600px){
+      .row{grid-template-columns:1fr}
+      .promises{grid-template-columns:1fr}
+      .slider{grid-template-columns:1fr}
+    }
+
+    /* Scroll reveal */
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s ease}
+    .reveal.show{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <header aria-label="Top navigation">
+    <div class="wrap nav">
+      <div class="brand">
+        <i class="fa-solid fa-stethoscope" aria-hidden="true"></i>
+        <span>Excelsiors Senate • Favor (Skytunez)</span>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#promises">Platform</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#support" class="btn">Support Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="badge"><i class="fa-regular fa-heart-pulse fa-lg"></i> Vote with confidence & care</span>
+          <h1 class="title">Vote <span style="color:var(--brand)">Favor (Skytunez)</span> for Excelsiors Senate — <br>Leading with Excellence in Medicine</h1>
+          <p class="lead">“This position demands leadership, clarity, and commitment — and he has exactly what it takes.” Together, we’ll build a class that doesn’t just talk about change — we create it.</p>
+          <div class="cta">
+            <a href="#support" class="btn btn-primary"><i class="fa-solid fa-hand-holding-heart"></i> Support Now</a>
+            <a href="#about" class="btn btn-outline"><i class="fa-solid fa-user-graduate"></i> Learn More</a>
+          </div>
+
+          <div class="ticker" aria-label="Class highlights">
+            <span class="chip">90+ future doctors</span>
+            <span class="chip">Student wellness first</span>
+            <span class="chip">Unity • Action • Progress</span>
+            <span class="chip">Medicine & Surgery — 200L</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Fast facts">
+          <img src="https://images.unsplash.com/photo-1622253692010-c8cf64d7a8f5?q=80&w=1200&auto=format&fit=crop" alt="Medical students collaborating" style="border-radius:12px">
+          <div class="stats" role="list">
+            <div class="stat" role="listitem"><b>200L</b><span class="muted">Medicine & Surgery</span></div>
+            <div class="stat" role="listitem"><b>Excelsiors</b><span class="muted">Class Community</span></div>
+            <div class="stat" role="listitem"><b>1 Mission</b><span class="muted">Excelling Together</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="wrap">
+      <h2 class="section-title">About Favor (Skytunez)</h2>
+      <p class="section-sub">A dedicated 200L Medicine & Surgery student with a passion for service, wellness, and smart student advocacy.</p>
+      <div class="about">
+        <div class="card reveal">
+          <h3>Who he is</h3>
+          <p>Favor is a proactive member of the Excelsiors class who believes leadership begins with service. From <strong>volunteering in health outreaches</strong> to coordinating <strong>study groups</strong>, he has consistently put people first.</p>
+          <p>He’s stepping up to <strong>serve, not just to represent</strong> — ensuring every voice is heard, every opinion respected, and every concern addressed.</p>
+          <ul>
+            <li>Advocate for <strong>student wellness</strong> and burnout prevention</li>
+            <li>Connector between <strong>academics and extracurriculars</strong></li>
+            <li>Believer in <strong>unity, fairness, and action</strong></li>
+          </ul>
+        </div>
+        <div class="card reveal">
+          <h3>Why he’s running</h3>
+          <p>To help our 90+ classmates thrive — academically, socially, and personally. The goal is a class culture where everyone feels supported, informed, and included.</p>
+          <blockquote style="border-left:4px solid var(--brand);padding-left:12px;color:var(--muted)">
+            “Let’s make our class stronger, louder, and united. Let’s move forward — together.”
+          </blockquote>
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop" alt="Stethoscope on a notebook" style="border-radius:12px;margin-top:10px">
+        </div>
+      </div>
+    </section>
+
+    <!-- PROMISES / PLATFORM -->
+    <section id="promises" class="wrap">
+      <h2 class="section-title">Platform: What Favor Will Deliver</h2>
+      <p class="section-sub">Designed for medical students — practical, empathetic, and results-driven.</p>
+
+      <div class="promises">
+        <div class="promise reveal">
+          <i class="fa-solid fa-book-medical" aria-hidden="true"></i>
+          <h4>Better Study Resources</h4>
+          <p>Improve access to lecture slides, past questions, and lab equipment through coordinated sharing and faculty liaison.</p>
+        </div>
+        <div class="promise reveal">
+          <i class="fa-solid fa-heart" aria-hidden="true"></i>
+          <h4>Wellness & Burnout Care</h4>
+          <p>Organize wellness breaks, peer-support meetups, and counseling awareness to keep us healthy and focused.</p>
+        </div>
+        <div class="promise reveal">
+          <i class="fa-solid fa-people-group" aria-hidden="true"></i>
+          <h4>Stronger Class Unity</h4>
+          <p>Monthly mixers & interest circles (sports, research, volunteering) so everyone finds a tribe.</p>
+        </div>
+        <div class="promise reveal">
+          <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+          <h4>Smarter Schedules</h4>
+          <p>Advocate for timetables that better balance lectures, labs, and personal study time.</p>
+        </div>
+        <div class="promise reveal">
+          <i class="fa-solid fa-recycle" aria-hidden="true"></i>
+          <h4>Eco-Friendly Campus</h4>
+          <p>Promote recycling drives and reduce waste in labs and common areas.</p>
+        </div>
+        <div class="promise reveal">
+          <i class="fa-solid fa-bullhorn" aria-hidden="true"></i>
+          <h4>Transparent Communication</h4>
+          <p>Fast updates via class channels and an open-door policy for feedback.</p>
+        </div>
+      </div>
+
+      <div class="accordion reveal" aria-label="More details">
+        <details>
+          <summary><i class="fa-solid fa-circle-info"></i> See more specifics</summary>
+          <ul>
+            <li>Centralized repository for notes, labs, and tutorials</li>
+            <li>Peer-led mini-revision sessions before assessments</li>
+            <li>Faculty feedback loops to surface class concerns quickly</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <!-- GALLERY / EVENTS -->
+    <section id="gallery" class="wrap">
+      <h2 class="section-title">Gallery & Events</h2>
+      <p class="section-sub">Moments of leadership, learning, and community.</p>
+
+      <div class="gallery">
+        <div class="slider" id="slider" aria-live="polite">
+          <!-- Royalty-free Unsplash placeholders (swap when you have your own) -->
+          <div class="slide reveal"><img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1200&auto=format&fit=crop" alt="Students studying together"></div>
+          <div class="slide reveal"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop" alt="Doctor with stethoscope"></div>
+          <div class="slide reveal"><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop" alt="Campus pathway"></div>
+        </div>
+        <div class="controls">
+          <button type="button" id="prev"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+          <button type="button" id="next">Next <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPORT / GIVEAWAY / CONTACT -->
+    <section id="support" class="wrap">
+      <h2 class="section-title">Support & Giveaway</h2>
+      <p class="section-sub">Submit your details to endorse Favor or join the giveaway. <strong>Nigeria: Bank Name + Account Number + Full Name</strong> are supported.</p>
+
+      <div class="card reveal" aria-label="Giveaway form">
+        <!--
+          EMAIL DELIVERY — PICK ONE:
+          A) FORMSPREE (default): set your endpoint in form action.
+             - Create a form at https://formspree.io
+             - Replace https://formspree.io/f/XXXXYYYY with your endpoint.
+          B) EMAILJS (client-side): scroll down to the JS CONFIG, set PUBLIC_KEY, SERVICE_ID, TEMPLATE_ID, then set USE_EMAILJS=true.
+        -->
+        <form id="supportForm" action="https://formspree.io/f/XXXXYYYY" method="POST" novalidate>
+          <!-- Simple anti-bot honeypot -->
+          <input type="text" name="website" id="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="row">
+            <div>
+              <label for="name">Full Name</label>
+              <input id="name" name="name" type="text" required placeholder="e.g., Adeoluwa Favor">
+            </div>
+            <div>
+              <label for="email">Email (optional)</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com">
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="bank">Bank Name</label>
+              <input id="bank" name="bank" type="text" required placeholder="e.g., GTBank">
+            </div>
+            <div>
+              <label for="acct">Account Number</label>
+              <input id="acct" name="account_number" inputmode="numeric" pattern="[0-9]{6,20}" required placeholder="e.g., 0123456789">
+            </div>
+          </div>
+
+          <label for="purpose">Purpose</label>
+          <select id="purpose" name="purpose" required>
+            <option value="">Select one…</option>
+            <option value="endorsement">Endorsement / Support</option>
+            <option value="giveaway">Giveaway Entry</option>
+            <option value="question">Question for the candidate</option>
+          </select>
+
+          <label for="message">Message (optional)</label>
+          <textarea id="message" name="message" rows="4" placeholder="Your endorsement, question, or encouragement…"></textarea>
+
+          <!-- For your Gmail inbox labeling -->
+          <input type="hidden" name="campaign" value="Excelsiors — Favor (Skytunez) Senate" />
+
+          <p class="hint">
+            By submitting, you consent to share your details for campaign support and possible giveaway processing.
+            Data is emailed to the designated Gmail inbox. Avoid including other sensitive information.
+          </p>
+
+          <button class="btn btn-primary" type="submit">
+            <i class="fa-solid fa-paper-plane"></i> Send
+          </button>
+          <div id="ok" class="success" role="status">Submitted successfully. Thank you! ✅</div>
+          <div id="fail" class="error" role="alert">Submission failed. Please try again.</div>
+        </form>
+      </div>
+
+      <!-- Pledge -->
+      <div class="card reveal" style="margin-top:16px" aria-label="Excelsiors Pledge">
+        <h3>Excelsiors Pledge</h3>
+        <p class="hint">Sign your support digitally.</p>
+        <div class="pledge">
+          <input id="pledgeName" type="text" placeholder="Your Name for the pledge" />
+          <canvas id="pad" width="560" height="180" aria-label="Signature pad"></canvas>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-outline" id="clearSig" type="button"><i class="fa-solid fa-eraser"></i> Clear</button>
+            <button class="btn btn-primary" id="saveSig" type="button"><i class="fa-solid fa-floppy-disk"></i> Save Pledge (Local)</button>
+          </div>
+          <p class="hint">Saved locally in your browser for privacy. You can also attach your pledge image in the message above if needed.</p>
+        </div>
+      </div>
+
+      <!-- Poll -->
+      <div class="card reveal" style="margin-top:16px" aria-label="Class Poll">
+        <h3>Quick Poll: What matters most to you?</h3>
+        <form id="pollForm" class="poll">
+          <label><input type="radio" name="poll" value="resources" required> Better access to study resources</label><br>
+          <label><input type="radio" name="poll" value="wellness"> Wellness & anti-burnout support</label><br>
+          <label><input type="radio" name="poll" value="schedule"> Smarter lecture/lab scheduling</label><br>
+          <label><input type="radio" name="poll" value="unity"> Stronger class unity & mixers</label><br>
+          <button class="btn btn-outline" type="submit"><i class="fa-solid fa-check"></i> Vote</button>
+        </form>
+        <div id="pollResults" class="poll-results" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div class="quote">“Excelsiors: Excelling Together in Medicine.”</div>
+      <div class="credit" aria-label="Site credit">
+        <strong>Created by Christopher</strong> — all thanks & credit acknowledged.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Optional: EmailJS CDN (only if you choose EmailJS route) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    /* ===========================
+       CONFIG: PICK YOUR EMAIL METHOD
+       ===========================
+       GitHub Pages is static. Use one of:
+       A) FORMSPREE (default): Put your endpoint in the form action attribute.
+       B) EMAILJS (client-side): Set USE_EMAILJS = true and fill keys below.
+
+       NOTE: If using EmailJS, create a template with fields:
+         name, email, bank, account_number, purpose, message, campaign
+    */
+    const USE_EMAILJS = false; // set to true if you want to use EmailJS instead of Formspree
+    const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+
+    if (USE_EMAILJS && window.emailjs) {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    /* ===========================
+       Simple slider controls
+       =========================== */
+    (function(){
+      const slider = document.getElementById('slider');
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+      let index = 0;
+
+      function show(i){
+        const slides = Array.from(slider.children);
+        const cols = getComputedStyle(slider).gridTemplateColumns.split(' ').length;
+        // Basic paginated sliding: hide all, show current page (cols items)
+        slides.forEach((s, idx)=> s.style.display = 'none');
+        for (let k=0; k<cols; k++){
+          const pos = (i*cols + k) % slides.length;
+          slides[pos].style.display = 'block';
+        }
+      }
+      prev.addEventListener('click',()=>{ index = (index - 1 + 10) % 10; show(index); });
+      next.addEventListener('click',()=>{ index = (index + 1) % 10; show(index); });
+      show(0);
+    })();
+
+    /* ===========================
+       Scroll reveal
+       =========================== */
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+      });
+    },{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    /* ===========================
+       SUPPORT / GIVEAWAY FORM
+       =========================== */
+    const form = document.getElementById('supportForm');
+    const ok = document.getElementById('ok');
+    const fail = document.getElementById('fail');
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      ok.style.display='none'; fail.style.display='none';
+
+      // Basic validation
+      const hp = document.getElementById('website').value; // honeypot
+      if(hp){ return; }
+
+      const fd = new FormData(form);
+      const data = Object.fromEntries(fd.entries());
+
+      // EmailJS route
+      if (USE_EMAILJS && window.emailjs){
+        try{
+          const payload = {
+            name: data.name || '',
+            email: data.email || '',
+            bank: data.bank || '',
+            account_number: data.account_number || '',
+            purpose: data.purpose || '',
+            message: data.message || '',
+            campaign: 'Excelsiors — Favor (Skytunez) Senate'
+          };
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, payload);
+          ok.style.display='block';
+          form.reset();
+          return;
+        }catch(err){
+          console.error('EmailJS error:', err);
+          fail.style.display='block';
+          return;
+        }
+      }
+
+      // Formspree route (default)
+      try{
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: fd
+        });
+        if(res.ok){
+          ok.style.display='block';
+          form.reset();
+        }else{
+          fail.style.display='block';
+        }
+      }catch(err){
+        console.error('Form error:', err);
+        fail.style.display='block';
+      }
+    });
+
+    /* ===========================
+       PLEDGE (signature pad)
+       =========================== */
+    const canvas = document.getElementById('pad');
+    const ctx = canvas.getContext('2d');
+    let drawing = false, last = null;
+    function pos(e){
+      const r = canvas.getBoundingClientRect();
+      const x = (e.touches? e.touches[0].clientX : e.clientX) - r.left;
+      const y = (e.touches? e.touches[0].clientY : e.clientY) - r.top;
+      return {x,y};
+    }
+    function line(a,b){
+      ctx.strokeStyle = '#7dd3fc';
+      ctx.lineWidth = 2.4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(a.x,a.y);
+      ctx.lineTo(b.x,b.y);
+      ctx.stroke();
+    }
+    canvas.addEventListener('mousedown', e=>{drawing=true; last=pos(e);});
+    canvas.addEventListener('mousemove', e=>{if(!drawing) return; const p=pos(e); line(last,p); last=p;});
+    canvas.addEventListener('mouseup', ()=> drawing=false);
+    canvas.addEventListener('mouseleave', ()=> drawing=false);
+    canvas.addEventListener('touchstart', e=>{drawing=true; last=pos(e); e.preventDefault();}, {passive:false});
+    canvas.addEventListener('touchmove', e=>{if(!drawing) return; const p=pos(e); line(last,p); last=p; e.preventDefault();},{passive:false});
+    canvas.addEventListener('touchend', ()=> drawing=false);
+
+    document.getElementById('clearSig').addEventListener('click', ()=>{
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+    });
+    document.getElementById('saveSig').addEventListener('click', ()=>{
+      const name = document.getElementById('pledgeName').value.trim();
+      if(!name){ alert('Please enter your name for the pledge.'); return; }
+      const img = canvas.toDataURL('image/png');
+      // Save in localStorage (private to user)
+      const key = `pledge:${name}`;
+      localStorage.setItem(key, img);
+      alert('Pledge saved locally. Thank you!');
+    });
+
+    /* ===========================
+       POLL (local-only)
+       =========================== */
+    const pollForm = document.getElementById('pollForm');
+    const pollResults = document.getElementById('pollResults');
+
+    function loadPoll(){
+      const data = JSON.parse(localStorage.getItem('excelsiors_poll') || '{"resources":0,"wellness":0,"schedule":0,"unity":0}');
+      const total = Object.values(data).reduce((a,b)=>a+b,0) || 1;
+      const pct = k => Math.round((data[k]/total)*100);
+      pollResults.textContent = `Resources: ${pct('resources')}% • Wellness: ${pct('wellness')}% • Schedule: ${pct('schedule')}% • Unity: ${pct('unity')}% (local results)`;
+    }
+    pollForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const choice = new FormData(pollForm).get('poll');
+      const data = JSON.parse(localStorage.getItem('excelsiors_poll') || '{"resources":0,"wellness":0,"schedule":0,"unity":0}');
+      data[choice] = (data[choice]||0) + 1;
+      localStorage.setItem('excelsiors_poll', JSON.stringify(data));
+      loadPoll();
+      alert('Thanks for voting!');
+    });
+    loadPoll();
+  </script>
+</body>
+</html>
