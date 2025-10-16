@@ -29,11 +29,12 @@
     body{
       margin:0;padding:0;
       background-color: var(--bg);
-      /* NEW: Subtle background pattern for depth */
       background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: 16px 16px;
       color:var(--ink);
       font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      /* ===== THE FIX IS HERE ===== */
+      overflow-x: hidden;
     }
     a{color:var(--brand);text-decoration:none}
     a:hover{text-decoration:underline}
@@ -50,7 +51,6 @@
     .nav-links{display:flex;gap:16px;flex-wrap:wrap}
     .nav-links a{color:var(--muted); transition: color .2s ease; padding: 4px 0; border-bottom: 2px solid transparent;}
     .nav-links a:hover{color:var(--ink); text-decoration: none;}
-    /* NEW: Active nav link style */
     .nav-links a.active{color:var(--brand); border-bottom-color: var(--brand);}
 
     /* Hero */
@@ -98,7 +98,7 @@
     details{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin:10px 0;padding:12px}
     summary{cursor:pointer;font-weight:600}
 
-    /* ===== NEW STABLE GALLERY SLIDER ===== */
+    /* Gallery Slider */
     .gallery-container {
       position: relative;
       overflow: hidden;
@@ -109,17 +109,17 @@
     }
     .gallery-slider {
       display: flex;
-      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smoother transition */
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
     .gallery-slide {
-      flex: 0 0 100%; /* Each slide takes full width of the container */
+      flex: 0 0 100%;
       min-width: 100%;
-      padding: 0 8px; /* Gap between slides */
+      padding: 0 8px;
     }
     .gallery-slide img {
       border-radius: 10px;
       width: 100%;
-      height: 450px; /* Consistent height */
+      height: 450px;
       object-fit: cover;
     }
     .gallery-controls {
@@ -142,7 +142,6 @@
       opacity: 0.4;
       cursor: not-allowed;
     }
-    /* ===== END NEW SLIDER ===== */
 
     /* Contact / Giveaway form */
     form{display:grid;gap:12px}
@@ -178,7 +177,7 @@
     @media (max-width: 600px){
       .row{grid-template-columns:1fr}
       .promises{grid-template-columns:1fr}
-      .gallery-slide img { height: 300px; } /* Adjust image height on small screens */
+      .gallery-slide img { height: 300px; }
     }
 
     /* Scroll reveal */
@@ -324,7 +323,7 @@
         <button type="button" id="prevBtn"><i class="fa-solid fa-chevron-left"></i> Prev</button>
         <button type="button" id="nextBtn">Next <i class="fa-solid fa-chevron-right"></i></button>
       </div>
-      </section>
+    </section>
 
     <section id="support" class="wrap">
       <h2 class="section-title">Support & Giveaway</h2>
@@ -422,10 +421,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-      /* ===========================
-         CONFIG: PICK YOUR EMAIL METHOD
-         =========================== */
-      const USE_EMAILJS = false; // set to true if you want to use EmailJS instead of Formspree
+      const USE_EMAILJS = false;
       const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
       const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
       const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
@@ -433,10 +429,7 @@
       if (USE_EMAILJS && window.emailjs) {
         emailjs.init(EMAILJS_PUBLIC_KEY);
       }
-
-      /* ===========================
-         NEW: STABLE GALLERY SLIDER
-         =========================== */
+     
       const slider = document.getElementById('gallerySlider');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
@@ -445,11 +438,8 @@
       const totalSlides = slides.length;
 
       function updateSliderPosition() {
-        const slideWidth = slides[0].clientWidth; // Get width of a single slide
-        // The magic happens here: move the entire slider container left or right
+        const slideWidth = slides[0].clientWidth;
         slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-
-        // Disable buttons at the ends
         prevBtn.disabled = currentIndex === 0;
         nextBtn.disabled = currentIndex === totalSlides - 1;
       }
@@ -468,13 +458,9 @@
         }
       });
       
-      // Update on window resize to keep it aligned
       window.addEventListener('resize', updateSliderPosition);
-      updateSliderPosition(); // Initial setup
-
-      /* ===========================
-         NEW: ACTIVE NAV ON SCROLL
-         =========================== */
+      updateSliderPosition();
+      
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
       
@@ -491,20 +477,14 @@
       }, observerOptions);
 
       sections.forEach(sec => sectionObserver.observe(sec));
-
-      /* ===========================
-         Scroll reveal (no changes)
-         =========================== */
+      
       const revealObserver = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){ e.target.classList.add('show'); revealObserver.unobserve(e.target); }
         });
       },{threshold:.15});
       document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
-
-      /* ===========================
-         SUPPORT / GIVEAWAY FORM (no changes)
-         =========================== */
+      
       const form = document.getElementById('supportForm');
       const ok = document.getElementById('ok');
       const fail = document.getElementById('fail');
@@ -534,10 +514,7 @@
           else{ fail.style.display='block'; }
         }catch(err){ console.error('Form error:', err); fail.style.display='block'; }
       });
-
-      /* ===========================
-         PLEDGE (signature pad - no changes)
-         =========================== */
+      
       const canvas = document.getElementById('pad');
       const ctx = canvas.getContext('2d');
       let drawing = false, last = null;
@@ -566,10 +543,7 @@
         localStorage.setItem(`pledge:${name}`, canvas.toDataURL('image/png'));
         alert('Pledge saved locally. Thank you!');
       });
-
-      /* ===========================
-         POLL (local-only - no changes)
-         =========================== */
+      
       const pollForm = document.getElementById('pollForm');
       const pollResults = document.getElementById('pollResults');
       function loadPoll(){
