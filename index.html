@@ -1,22 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!--
-    Favor (Skytunez) for Class Senator — Excelsiors (200L Medicine & Surgery)
-    Single-file site for GitHub Pages
-    Features: Hero, About, Promises (cards/accordion), Gallery slider, Poll, Contact/Support form (Bank Name, Account Number, Name) -> Email
-    Email via Formspree (default) OR EmailJS (optional, client-side).
-    Built with accessibility, responsiveness, and medical-themed UI in mind.
-  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vote Favor (Skytunez) — Excelsiors Class Senator</title>
   <meta name="description" content="Vote Favor (Skytunez) for Excelsiors Senate — Leading with Excellence in Medicine. 200L Medicine & Surgery." />
 
-  <!-- Google Fonts (sans-serif for readability) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome (icons for cards & UI) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
@@ -34,7 +25,16 @@
       --radius:14px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:linear-gradient(180deg,#0c1625 0%, #0e1b2b 100%);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;scroll-behavior:smooth}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;padding:0;
+      background-color: var(--bg);
+      /* NEW: Subtle background pattern for depth */
+      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 16px 16px;
+      color:var(--ink);
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    }
     a{color:var(--brand);text-decoration:none}
     a:hover{text-decoration:underline}
     img{max-width:100%;display:block}
@@ -45,10 +45,13 @@
     .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
     .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
     .brand i{color:var(--accent)}
-    .nav a.btn{padding:10px 14px;border-radius:10px;background:var(--brand);color:#052424;font-weight:700;box-shadow:var(--shadow)}
+    .nav a.btn{padding:10px 14px;border-radius:10px;background:var(--brand);color:#052424;font-weight:700;box-shadow:var(--shadow); transition: transform 0.2s ease;}
+    .nav a.btn:hover { transform: scale(1.05); text-decoration: none;}
     .nav-links{display:flex;gap:16px;flex-wrap:wrap}
-    .nav-links a{color:var(--muted)}
-    .nav-links a:hover{color:var(--ink)}
+    .nav-links a{color:var(--muted); transition: color .2s ease; padding: 4px 0; border-bottom: 2px solid transparent;}
+    .nav-links a:hover{color:var(--ink); text-decoration: none;}
+    /* NEW: Active nav link style */
+    .nav-links a.active{color:var(--brand); border-bottom-color: var(--brand);}
 
     /* Hero */
     .hero{padding:70px 0 40px;position:relative;overflow:hidden}
@@ -57,7 +60,8 @@
     h1.title{font-size:clamp(28px,5vw,46px);line-height:1.08;margin:14px 0}
     .lead{color:var(--muted);font-size:clamp(15px,2.3vw,18px)}
     .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:800}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:800; transition: transform 0.2s ease;}
+    .btn:hover { transform: scale(1.04); }
     .btn-primary{background:var(--brand);color:#052424;box-shadow:var(--shadow);animation:heartbeat 2.2s ease-in-out infinite}
     .btn-outline{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.14)}
     @keyframes heartbeat{
@@ -71,6 +75,8 @@
     .stat{background:var(--panel);border-radius:12px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,.06)}
     .stat b{display:block;font-size:22px}
     .ticker{display:flex;gap:18px;overflow:auto;padding:10px 0;margin-top:16px}
+    .ticker::-webkit-scrollbar { height: 4px; }
+    .ticker::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     .chip{white-space:nowrap;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);color:var(--muted);background:rgba(255,255,255,.02)}
 
     /* Sections */
@@ -85,19 +91,58 @@
     /* Promises */
     .promises{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     .promise{padding:16px;border-radius:14px;background:var(--panel);border:1px solid rgba(255,255,255,.06);transition:transform .2s ease, border-color .2s ease}
-    .promise:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.22)}
+    .promise:hover{transform:translateY(-4px); border-color: var(--brand);}
     .promise i{font-size:22px;color:var(--accent)}
     .promise h4{margin:8px 0}
     .accordion{margin-top:20px;border-top:1px dashed rgba(255,255,255,.15);padding-top:16px}
     details{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin:10px 0;padding:12px}
     summary{cursor:pointer;font-weight:600}
 
-    /* Gallery slider */
-    .gallery{position:relative}
-    .slider{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .slide{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
-    .gallery .controls{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
-    .controls button{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--ink);border-radius:10px;padding:8px 12px;cursor:pointer}
+    /* ===== NEW STABLE GALLERY SLIDER ===== */
+    .gallery-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px;
+      background: var(--panel);
+    }
+    .gallery-slider {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smoother transition */
+    }
+    .gallery-slide {
+      flex: 0 0 100%; /* Each slide takes full width of the container */
+      min-width: 100%;
+      padding: 0 8px; /* Gap between slides */
+    }
+    .gallery-slide img {
+      border-radius: 10px;
+      width: 100%;
+      height: 450px; /* Consistent height */
+      object-fit: cover;
+    }
+    .gallery-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+    .gallery-controls button {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.2);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .gallery-controls button:hover { background: rgba(255,255,255,.15); }
+    .gallery-controls button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    /* ===== END NEW SLIDER ===== */
 
     /* Contact / Giveaway form */
     form{display:grid;gap:12px}
@@ -128,13 +173,12 @@
       .hero-grid{grid-template-columns:1fr}
       .about{grid-template-columns:1fr}
       .promises{grid-template-columns:1fr 1fr}
-      .slider{grid-template-columns:1fr 1fr}
       .footer-grid{grid-template-columns:1fr}
     }
     @media (max-width: 600px){
       .row{grid-template-columns:1fr}
       .promises{grid-template-columns:1fr}
-      .slider{grid-template-columns:1fr}
+      .gallery-slide img { height: 300px; } /* Adjust image height on small screens */
     }
 
     /* Scroll reveal */
@@ -159,11 +203,10 @@
   </header>
 
   <main>
-    <!-- HERO -->
-    <section class="hero wrap">
+    <section id="home" class="hero wrap">
       <div class="hero-grid">
         <div>
-          <span class="badge"><i class="fa-regular fa-heart-pulse fa-lg"></i> Vote with confidence & care</span>
+          <span class="badge"><i class="fa-solid fa-heart-pulse fa-lg"></i> Vote with confidence & care</span>
           <h1 class="title">Vote <span style="color:var(--brand)">Favor (Skytunez)</span> for Excelsiors Senate — <br>Leading with Excellence in Medicine</h1>
           <p class="lead">“This position demands leadership, clarity, and commitment — and he has exactly what it takes.” Together, we’ll build a class that doesn’t just talk about change — we create it.</p>
           <div class="cta">
@@ -190,7 +233,6 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
     <section id="about" class="wrap">
       <h2 class="section-title">About Favor (Skytunez)</h2>
       <p class="section-sub">A dedicated 200L Medicine & Surgery student with a passion for service, wellness, and smart student advocacy.</p>
@@ -216,7 +258,6 @@
       </div>
     </section>
 
-    <!-- PROMISES / PLATFORM -->
     <section id="promises" class="wrap">
       <h2 class="section-title">Platform: What Favor Will Deliver</h2>
       <p class="section-sub">Designed for medical students — practical, empathetic, and results-driven.</p>
@@ -266,40 +307,31 @@
       </div>
     </section>
 
-    <!-- GALLERY / EVENTS -->
     <section id="gallery" class="wrap">
       <h2 class="section-title">Gallery & Events</h2>
       <p class="section-sub">Moments of leadership, learning, and community.</p>
 
-      <div class="gallery">
-        <div class="slider" id="slider" aria-live="polite">
-          <!-- Royalty-free Unsplash placeholders (swap when you have your own) -->
-          <div class="slide reveal"><img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1200&auto=format&fit=crop" alt="Students studying together"></div>
-          <div class="slide reveal"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop" alt="Doctor with stethoscope"></div>
-          <div class="slide reveal"><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop" alt="Campus pathway"></div>
-        </div>
-        <div class="controls">
-          <button type="button" id="prev"><i class="fa-solid fa-chevron-left"></i> Prev</button>
-          <button type="button" id="next">Next <i class="fa-solid fa-chevron-right"></i></button>
+      <div class="gallery-container reveal">
+        <div class="gallery-slider" id="gallerySlider">
+          <div class="gallery-slide"><img src="image/favor1.jpg" alt="Favor at a community event"></div>
+          <div class="gallery-slide"><img src="image/favor2.jpg" alt="Favor speaking to classmates"></div>
+          <div class="gallery-slide"><img src="image/favor3.jpg" alt="Favor in a study group"></div>
+          <div class="gallery-slide"><img src="image/favor4.jpg" alt="Favor participating in a health outreach"></div>
+          <div class="gallery-slide"><img src="image/favor5.jpg" alt="Candid photo of Favor on campus"></div>
         </div>
       </div>
-    </section>
+      <div class="gallery-controls">
+        <button type="button" id="prevBtn"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+        <button type="button" id="nextBtn">Next <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      </section>
 
-    <!-- SUPPORT / GIVEAWAY / CONTACT -->
     <section id="support" class="wrap">
       <h2 class="section-title">Support & Giveaway</h2>
       <p class="section-sub">Submit your details to endorse Favor or join the giveaway. <strong>Nigeria: Bank Name + Account Number + Full Name</strong> are supported.</p>
 
       <div class="card reveal" aria-label="Giveaway form">
-        <!--
-          EMAIL DELIVERY — PICK ONE:
-          A) FORMSPREE (default): set your endpoint in form action.
-             - Create a form at https://formspree.io
-             - Replace https://formspree.io/f/XXXXYYYY with your endpoint.
-          B) EMAILJS (client-side): scroll down to the JS CONFIG, set PUBLIC_KEY, SERVICE_ID, TEMPLATE_ID, then set USE_EMAILJS=true.
-        -->
         <form id="supportForm" action="https://formspree.io/f/XXXXYYYY" method="POST" novalidate>
-          <!-- Simple anti-bot honeypot -->
           <input type="text" name="website" id="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="row">
             <div>
@@ -334,7 +366,6 @@
           <label for="message">Message (optional)</label>
           <textarea id="message" name="message" rows="4" placeholder="Your endorsement, question, or encouragement…"></textarea>
 
-          <!-- For your Gmail inbox labeling -->
           <input type="hidden" name="campaign" value="Excelsiors — Favor (Skytunez) Senate" />
 
           <p class="hint">
@@ -350,7 +381,6 @@
         </form>
       </div>
 
-      <!-- Pledge -->
       <div class="card reveal" style="margin-top:16px" aria-label="Excelsiors Pledge">
         <h3>Excelsiors Pledge</h3>
         <p class="hint">Sign your support digitally.</p>
@@ -365,7 +395,6 @@
         </div>
       </div>
 
-      <!-- Poll -->
       <div class="card reveal" style="margin-top:16px" aria-label="Class Poll">
         <h3>Quick Poll: What matters most to you?</h3>
         <form id="pollForm" class="poll">
@@ -389,186 +418,177 @@
     </div>
   </footer>
 
-  <!-- Optional: EmailJS CDN (only if you choose EmailJS route) -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    /* ===========================
-       CONFIG: PICK YOUR EMAIL METHOD
-       ===========================
-       GitHub Pages is static. Use one of:
-       A) FORMSPREE (default): Put your endpoint in the form action attribute.
-       B) EMAILJS (client-side): Set USE_EMAILJS = true and fill keys below.
+    document.addEventListener('DOMContentLoaded', () => {
 
-       NOTE: If using EmailJS, create a template with fields:
-         name, email, bank, account_number, purpose, message, campaign
-    */
-    const USE_EMAILJS = false; // set to true if you want to use EmailJS instead of Formspree
-    const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+      /* ===========================
+         CONFIG: PICK YOUR EMAIL METHOD
+         =========================== */
+      const USE_EMAILJS = false; // set to true if you want to use EmailJS instead of Formspree
+      const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+      const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+      const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
 
-    if (USE_EMAILJS && window.emailjs) {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
-
-    /* ===========================
-       Simple slider controls
-       =========================== */
-    (function(){
-      const slider = document.getElementById('slider');
-      const prev = document.getElementById('prev');
-      const next = document.getElementById('next');
-      let index = 0;
-
-      function show(i){
-        const slides = Array.from(slider.children);
-        const cols = getComputedStyle(slider).gridTemplateColumns.split(' ').length;
-        // Basic paginated sliding: hide all, show current page (cols items)
-        slides.forEach((s, idx)=> s.style.display = 'none');
-        for (let k=0; k<cols; k++){
-          const pos = (i*cols + k) % slides.length;
-          slides[pos].style.display = 'block';
-        }
+      if (USE_EMAILJS && window.emailjs) {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
       }
-      prev.addEventListener('click',()=>{ index = (index - 1 + 10) % 10; show(index); });
-      next.addEventListener('click',()=>{ index = (index + 1) % 10; show(index); });
-      show(0);
-    })();
 
-    /* ===========================
-       Scroll reveal
-       =========================== */
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+      /* ===========================
+         NEW: STABLE GALLERY SLIDER
+         =========================== */
+      const slider = document.getElementById('gallerySlider');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const slides = document.querySelectorAll('.gallery-slide');
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+
+      function updateSliderPosition() {
+        const slideWidth = slides[0].clientWidth; // Get width of a single slide
+        // The magic happens here: move the entire slider container left or right
+        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+        // Disable buttons at the ends
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === totalSlides - 1;
+      }
+
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < totalSlides - 1) {
+          currentIndex++;
+          updateSliderPosition();
+        }
       });
-    },{threshold:.15});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    /* ===========================
-       SUPPORT / GIVEAWAY FORM
-       =========================== */
-    const form = document.getElementById('supportForm');
-    const ok = document.getElementById('ok');
-    const fail = document.getElementById('fail');
-
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      ok.style.display='none'; fail.style.display='none';
-
-      // Basic validation
-      const hp = document.getElementById('website').value; // honeypot
-      if(hp){ return; }
-
-      const fd = new FormData(form);
-      const data = Object.fromEntries(fd.entries());
-
-      // EmailJS route
-      if (USE_EMAILJS && window.emailjs){
-        try{
-          const payload = {
-            name: data.name || '',
-            email: data.email || '',
-            bank: data.bank || '',
-            account_number: data.account_number || '',
-            purpose: data.purpose || '',
-            message: data.message || '',
-            campaign: 'Excelsiors — Favor (Skytunez) Senate'
-          };
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, payload);
-          ok.style.display='block';
-          form.reset();
-          return;
-        }catch(err){
-          console.error('EmailJS error:', err);
-          fail.style.display='block';
-          return;
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateSliderPosition();
         }
-      }
+      });
+      
+      // Update on window resize to keep it aligned
+      window.addEventListener('resize', updateSliderPosition);
+      updateSliderPosition(); // Initial setup
 
-      // Formspree route (default)
-      try{
-        const res = await fetch(form.action, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: fd
+      /* ===========================
+         NEW: ACTIVE NAV ON SCROLL
+         =========================== */
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+      
+      const observerOptions = { rootMargin: '-50% 0px -50% 0px' };
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+            });
+          }
         });
-        if(res.ok){
-          ok.style.display='block';
-          form.reset();
-        }else{
-          fail.style.display='block';
+      }, observerOptions);
+
+      sections.forEach(sec => sectionObserver.observe(sec));
+
+      /* ===========================
+         Scroll reveal (no changes)
+         =========================== */
+      const revealObserver = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ e.target.classList.add('show'); revealObserver.unobserve(e.target); }
+        });
+      },{threshold:.15});
+      document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+      /* ===========================
+         SUPPORT / GIVEAWAY FORM (no changes)
+         =========================== */
+      const form = document.getElementById('supportForm');
+      const ok = document.getElementById('ok');
+      const fail = document.getElementById('fail');
+
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        ok.style.display='none'; fail.style.display='none';
+        const hp = document.getElementById('website').value;
+        if(hp){ return; }
+
+        const fd = new FormData(form);
+        const data = Object.fromEntries(fd.entries());
+
+        if (USE_EMAILJS && window.emailjs){
+          try{
+            const payload = { ...data, campaign: 'Excelsiors — Favor (Skytunez) Senate' };
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, payload);
+            ok.style.display='block';
+            form.reset();
+            return;
+          }catch(err){ console.error('EmailJS error:', err); fail.style.display='block'; return; }
         }
-      }catch(err){
-        console.error('Form error:', err);
-        fail.style.display='block';
+
+        try{
+          const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
+          if(res.ok){ ok.style.display='block'; form.reset(); }
+          else{ fail.style.display='block'; }
+        }catch(err){ console.error('Form error:', err); fail.style.display='block'; }
+      });
+
+      /* ===========================
+         PLEDGE (signature pad - no changes)
+         =========================== */
+      const canvas = document.getElementById('pad');
+      const ctx = canvas.getContext('2d');
+      let drawing = false, last = null;
+      function pos(e){
+        const r = canvas.getBoundingClientRect();
+        const x = (e.touches? e.touches[0].clientX : e.clientX) - r.left;
+        const y = (e.touches? e.touches[0].clientY : e.clientY) - r.top;
+        return {x,y};
       }
-    });
+      function line(a,b){
+        ctx.strokeStyle = '#7dd3fc'; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+      canvas.addEventListener('mousedown', e=>{drawing=true; last=pos(e);});
+      canvas.addEventListener('mousemove', e=>{if(!drawing) return; const p=pos(e); line(last,p); last=p;});
+      canvas.addEventListener('mouseup', ()=> drawing=false);
+      canvas.addEventListener('mouseleave', ()=> drawing=false);
+      canvas.addEventListener('touchstart', e=>{drawing=true; last=pos(e); e.preventDefault();}, {passive:false});
+      canvas.addEventListener('touchmove', e=>{if(!drawing) return; const p=pos(e); line(last,p); last=p; e.preventDefault();},{passive:false});
+      canvas.addEventListener('touchend', ()=> drawing=false);
 
-    /* ===========================
-       PLEDGE (signature pad)
-       =========================== */
-    const canvas = document.getElementById('pad');
-    const ctx = canvas.getContext('2d');
-    let drawing = false, last = null;
-    function pos(e){
-      const r = canvas.getBoundingClientRect();
-      const x = (e.touches? e.touches[0].clientX : e.clientX) - r.left;
-      const y = (e.touches? e.touches[0].clientY : e.clientY) - r.top;
-      return {x,y};
-    }
-    function line(a,b){
-      ctx.strokeStyle = '#7dd3fc';
-      ctx.lineWidth = 2.4;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(a.x,a.y);
-      ctx.lineTo(b.x,b.y);
-      ctx.stroke();
-    }
-    canvas.addEventListener('mousedown', e=>{drawing=true; last=pos(e);});
-    canvas.addEventListener('mousemove', e=>{if(!drawing) return; const p=pos(e); line(last,p); last=p;});
-    canvas.addEventListener('mouseup', ()=> drawing=false);
-    canvas.addEventListener('mouseleave', ()=> drawing=false);
-    canvas.addEventListener('touchstart', e=>{drawing=true; last=pos(e); e.preventDefault();}, {passive:false});
-    canvas.addEventListener('touchmove', e=>{if(!drawing) return; const p=pos(e); line(last,p); last=p; e.preventDefault();},{passive:false});
-    canvas.addEventListener('touchend', ()=> drawing=false);
+      document.getElementById('clearSig').addEventListener('click', ()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); });
+      document.getElementById('saveSig').addEventListener('click', ()=>{
+        const name = document.getElementById('pledgeName').value.trim();
+        if(!name){ alert('Please enter your name for the pledge.'); return; }
+        localStorage.setItem(`pledge:${name}`, canvas.toDataURL('image/png'));
+        alert('Pledge saved locally. Thank you!');
+      });
 
-    document.getElementById('clearSig').addEventListener('click', ()=>{
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-    });
-    document.getElementById('saveSig').addEventListener('click', ()=>{
-      const name = document.getElementById('pledgeName').value.trim();
-      if(!name){ alert('Please enter your name for the pledge.'); return; }
-      const img = canvas.toDataURL('image/png');
-      // Save in localStorage (private to user)
-      const key = `pledge:${name}`;
-      localStorage.setItem(key, img);
-      alert('Pledge saved locally. Thank you!');
-    });
-
-    /* ===========================
-       POLL (local-only)
-       =========================== */
-    const pollForm = document.getElementById('pollForm');
-    const pollResults = document.getElementById('pollResults');
-
-    function loadPoll(){
-      const data = JSON.parse(localStorage.getItem('excelsiors_poll') || '{"resources":0,"wellness":0,"schedule":0,"unity":0}');
-      const total = Object.values(data).reduce((a,b)=>a+b,0) || 1;
-      const pct = k => Math.round((data[k]/total)*100);
-      pollResults.textContent = `Resources: ${pct('resources')}% • Wellness: ${pct('wellness')}% • Schedule: ${pct('schedule')}% • Unity: ${pct('unity')}% (local results)`;
-    }
-    pollForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const choice = new FormData(pollForm).get('poll');
-      const data = JSON.parse(localStorage.getItem('excelsiors_poll') || '{"resources":0,"wellness":0,"schedule":0,"unity":0}');
-      data[choice] = (data[choice]||0) + 1;
-      localStorage.setItem('excelsiors_poll', JSON.stringify(data));
+      /* ===========================
+         POLL (local-only - no changes)
+         =========================== */
+      const pollForm = document.getElementById('pollForm');
+      const pollResults = document.getElementById('pollResults');
+      function loadPoll(){
+        const data = JSON.parse(localStorage.getItem('excelsiors_poll') || '{"resources":0,"wellness":0,"schedule":0,"unity":0}');
+        const total = Object.values(data).reduce((a,b)=>a+b,0) || 1;
+        const pct = k => Math.round((data[k]/total)*100);
+        pollResults.textContent = `Resources: ${pct('resources')}% • Wellness: ${pct('wellness')}% • Schedule: ${pct('schedule')}% • Unity: ${pct('unity')}% (local results)`;
+      }
+      pollForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const choice = new FormData(pollForm).get('poll');
+        const data = JSON.parse(localStorage.getItem('excelsiors_poll') || '{"resources":0,"wellness":0,"schedule":0,"unity":0}');
+        data[choice] = (data[choice]||0) + 1;
+        localStorage.setItem('excelsiors_poll', JSON.stringify(data));
+        loadPoll();
+        alert('Thanks for voting!');
+      });
       loadPoll();
-      alert('Thanks for voting!');
     });
-    loadPoll();
   </script>
 </body>
 </html>
